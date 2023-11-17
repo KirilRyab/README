@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <math.h>
+#include <windows.h>
+
+double odleglosc(double x1, double y1, double x2, double y2) {
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}
+
+double pole_trojkata_boki(double a, double b, double c) {
+    double p = (a + b + c) / 2.0;
+    return sqrt(p * (p - a) * (p - b) * (p - c));
+}
+
+double pole_trojkata_wspolrzedne(double x1, double y1, double x2, double y2, double x3, double y3) {
+    double a = odleglosc(x1, y1, x2, y2);
+    double b = odleglosc(x2, y2, x3, y3);
+    double c = odleglosc(x3, y3, x1, y1);
+
+    return pole_trojkata_boki(a, b, c);
+}
+
+int main(void) {
+    int wybor;
+    SetConsoleOutputCP(CP_UTF8);
+
+    printf("Wybierz opcje:\n 1. Oblicz pole trójkąta na podstawie długości boków\n 2. Oblicz pole trójkąta na podstawie współrzędnych wierzchołków\n");
+    printf("Wybór: ");
+    scanf("%d", &wybor);
+
+    if (wybor == 1)
+    {
+        double a, b, c;
+        printf("Podaj długości boków trójkąta (a, b, c): ");
+        scanf("%lf %lf %lf", &a, &b, &c);
+
+        if (a + b > c && a + c > b && b + c > a) {
+            double pole = pole_trojkata_boki(a, b, c);
+            printf("Pole trójkąta wynosi: %.2f\n", pole);
+        } else
+        {
+            printf("Podane długości boków nie spełniają warunku istnienia trójkąta.\n");
+        }
+    } else if (wybor == 2)
+    {
+        double x1, y1, x2, y2, x3, y3;
+        printf("Podaj współrzędne wierzchołków trójkąta (x1, y1), (x2, y2), (x3, y3): ");
+        scanf("%lf %lf %lf %lf %lf %lf", &x1, &y1, &x2, &y2, &x3, &y3);
+
+        double pole = pole_trojkata_wspolrzedne(x1, y1, x2, y2, x3, y3);
+        printf("Pole trójkąta wynosi: %.2f\n", pole);
+    } else
+    {
+        printf("Nieprawidłowy wybór.\n");
+    }
+
+    return (0);
+}

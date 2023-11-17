@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <math.h>
+#include <windows.h>
+
+double pole_powierzchni_kuli(double r);
+double objetosc_kuli(double r);
+double objetosc_wycinka_kuli(double r, double h, int alfa);
+
+int main(void) {
+    SetConsoleOutputCP(CP_UTF8);
+    double promien_kuli, wysokosc_wycinka;
+    int kat_wyciecia_wycinka;
+
+    printf("Podaj promień kuli: ");
+    scanf("%lf", &promien_kuli);
+
+    printf("Pole powierzchni kuli o promieniu %.2f: %.2f\n", promien_kuli, pole_powierzchni_kuli(promien_kuli));
+    printf("Objętość kuli o promieniu %.2f: %.2f\n", promien_kuli, objetosc_kuli(promien_kuli));
+
+    printf("Podaj wysokość wycinka kuli: ");
+    scanf("%lf", &wysokosc_wycinka);
+
+    printf("Podaj kąt wycięcia wycinka kuli: ");
+    scanf("%d", &kat_wyciecia_wycinka);
+
+    printf("Objętość wycinka kuli o promieniu %.2f, wysokości %.2f i kącie wycięcia %d: %.2f\n", promien_kuli, wysokosc_wycinka, kat_wyciecia_wycinka, objetosc_wycinka_kuli(promien_kuli, wysokosc_wycinka, kat_wyciecia_wycinka));
+
+    return 0;
+}
+
+double pole_powierzchni_kuli(double r) {
+    return 4.0 * M_PI * pow(r, 2);
+}
+
+double objetosc_kuli(double r) {
+    return (4.0 / 3.0) * M_PI * pow(r, 3);
+}
+
+double objetosc_wycinka_kuli(double r, double h, int alfa) {
+    double kat_w_radianach = alfa * M_PI / 180.0;
+    double objetosc_pelnej_kuli = objetosc_kuli(r);
+
+    if (alfa < 0 || alfa > 360) {
+        printf("Błąd: Kąt wycięcia musi być w zakresie od 0 do 360 stopni.\n");
+        return -1;
+    } else if (alfa == 360) {
+        return objetosc_pelnej_kuli;
+    } else {
+        return (kat_w_radianach / (2.0 * M_PI)) * objetosc_pelnej_kuli - (1.0 / 3.0) * M_PI * pow(h, 2) * (r - h / 3.0);
+    }
+}
